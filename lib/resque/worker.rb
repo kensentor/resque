@@ -908,8 +908,11 @@ module Resque
 
       begin
         @child = fork do
+          log_with_severity :error, "Forking"
           unregister_signal_handlers if term_child
+          log_with_severity :error, "Performing"
           perform(job, &block)
+          log_with_severity :error, "Perform done"
           exit! unless run_at_exit_hooks
         end
       rescue NotImplementedError
